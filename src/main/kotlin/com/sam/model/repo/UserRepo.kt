@@ -33,8 +33,18 @@ class UserRepo {
 
     fun getByUserId(userId :String) :UserView?= database.getCollection(Const.COLLECTION_USER,UserView::class.java)
                                                          .aggregate(listOf(
-                                                                    match(Document("userId",userId)),
-                                                                    addFields(Field("rmk","\$userId"))
+                                                                        match(Document("userId",userId)),
+                                                                        lookup("order","_id","userId","orderInfo"),
+                                                                        addFields(
+                                                                             listOf(
+                                                                                     Field("itemList",Document("\$reduce",
+                                                                                             Document("input","\$orderInfo")
+                                                                                                     .append("initialValue", listOf<String>())
+                                                                                                     .append("in",Document("\$let",Document("vars",Document("elem",Document("\$concatArrays", listOf("\$\$value","\$\$this.itemList"))))
+                                                                                                             .append("in",Document("\$setUnion","\$\$elem"))))
+                                                                                     )),
+                                                                                     Field("rmk","\$userId")
+                                                                        ))
                                                             ))
                                                          .toList()
                                                          .firstOrNull()
@@ -61,7 +71,7 @@ class UserRepo {
         database.getCollection(Const.COLLECTION_USER,User::class.java)
                 .insertOne(user)
 
-        return null
+        return getByUserId(user.userId)
     }
 
 }
