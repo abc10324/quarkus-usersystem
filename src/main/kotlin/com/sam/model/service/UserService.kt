@@ -2,6 +2,7 @@ package com.sam.model.service
 
 import com.sam.model.repo.User
 import com.sam.model.repo.UserRepo
+import com.sam.model.repo.UserView
 import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
 
@@ -15,6 +16,6 @@ class UserService {
 
     fun getAll() = userRepo.getAll()
 
-    fun insert(user:User): User = userRepo.insert(user)
+    fun insert(user:User) = userRepo.insert(user)
 
 }
