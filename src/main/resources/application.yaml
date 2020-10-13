@@ -1,6 +1,8 @@
 quarkus:
   mongodb:
-    connection-string: mongodb://localhost:27017
+#    connection-string: mongodb://localhost:27017
+#    connection-string: mongodb://${LOCAL_HOST}:27017
+    connection-string: mongodb://${MONGODB_USER}:${MONGODB_PWD}@${LOCAL_HOST}:27017
 
 
 

@@ -14,7 +14,7 @@ class ObjectIdDeserializer: JsonDeserializer<ObjectId>() {
 
         result = when{
                     ObjectId.isValid(oid?.asText()) ->  ObjectId(oid?.asText())
-                    ObjectId.isValid(oid?.get("\$oid")?.asText()) -> ObjectId(oid?.asText())
+                    ObjectId.isValid(oid?.get("\$oid")?.asText()) -> ObjectId(oid?.get("\$oid")?.asText())
                     else ->  ObjectId()
                 }
 
